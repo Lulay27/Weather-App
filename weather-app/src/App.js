@@ -11,3 +11,13 @@ function App() {
 }
 
 export default App;
+
+// notes
+
+// weather app components
+
+// searchbar user input with magnifyglass button can use enter to submit form
+
+// background main for now just a random dark color
+
+// weather data displayed under searchbar
