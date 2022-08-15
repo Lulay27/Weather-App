@@ -7,32 +7,18 @@ export default class GifAPI extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      gifSearch: this.props.gifSearch,
-      imgSrc: '',
-    };
-  }
-
-  componentDidMount() {
-    fetch(
-      `https://api.giphy.com/v1/gifs/translate?api_key=Y3N6ACeh4OhO4q5qG0Z7Sgbk5KIrzRSY&s=${this.state.gifSearch}`,
-      { mode: 'cors' }
-    )
-      .then((response) => {
-        return response.json();
-      })
-      .then((response) => {
-        this.setState({
-          imgSrc: response.data.images.original.url,
-        });
-      });
+    // this.state = {
+    //   gifSearch: this.props.gifSearch,
+    //   imgSrc: '',
+    // };
   }
 
   render() {
     return (
       <div>
-        swag
-        <img src={this.state.imgSrc}></img>
+        {this.props.isSubmitting
+          ? this.props.handleApiGif(this.props.gifSearch)
+          : ''}
       </div>
     );
   }

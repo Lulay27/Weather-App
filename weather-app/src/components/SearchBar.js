@@ -10,6 +10,8 @@ export class SearchBar extends Component {
     this.state = {
       input: '',
       gifSearch: '',
+      isSubmitting: false,
+      imgSrc: '',
     };
   }
 
@@ -24,14 +26,31 @@ export class SearchBar extends Component {
     this.setState({
       input: '',
       gifSearch: this.state.input,
+      isSubmitting: true,
     });
+  };
+
+  handleApiGif = (gifSearch) => {
+    fetch(
+      `https://api.giphy.com/v1/gifs/translate?api_key=Y3N6ACeh4OhO4q5qG0Z7Sgbk5KIrzRSY&s=${gifSearch}`,
+      { mode: 'cors' }
+    )
+      .then((response) => {
+        return response.json();
+      })
+      .then((response) => {
+        this.setState({
+          imgSrc: response.data.images.original.url,
+          isSubmitting: false,
+        });
+      });
   };
 
   render() {
     return (
       <div>
         <div>
-          <form onClick={this.handleSubmit}>
+          <form onSubmit={this.handleSubmit}>
             <input
               onChange={this.handleInputChange}
               type="text"
@@ -43,7 +62,14 @@ export class SearchBar extends Component {
         </div>
 
         <div>
-          <GifAPI gifSearch={this.state.gifSearch} />
+          <GifAPI
+            isSubmitting={this.state.isSubmitting}
+            handleApiGif={this.handleApiGif}
+            gifSearch={this.state.gifSearch}
+          />
+        </div>
+        <div>
+          <img src={this.state.imgSrc}></img>
         </div>
       </div>
     );
