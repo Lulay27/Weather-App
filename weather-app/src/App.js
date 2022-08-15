@@ -1,4 +1,5 @@
 import MainPage from './components/MainPage';
+import Overview from './components/Overview';
 import { SearchBar } from './components/SearchBar';
 
 function App() {
@@ -6,6 +7,7 @@ function App() {
     <div>
       <MainPage />
       <SearchBar />
+      <Overview />
     </div>
   );
 }
