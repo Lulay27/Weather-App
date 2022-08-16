@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import GifAPI from './GifAPI';
+import Overview from './Overview';
 
 // right now searchbar is the overview mode code over and clean it so logic makes sense
 
@@ -70,6 +71,13 @@ export class SearchBar extends Component {
         </div>
         <div>
           <img src={this.state.imgSrc}></img>
+        </div>
+
+        <div>
+          <Overview
+            isSubmitting={this.state.isSubmitting}
+            gifSearch={this.state.gifSearch}
+          />
         </div>
       </div>
     );

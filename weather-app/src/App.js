@@ -7,7 +7,6 @@ function App() {
     <div>
       <MainPage />
       <SearchBar />
-      <Overview />
     </div>
   );
 }
@@ -23,3 +22,6 @@ export default App;
 // background main for now just a random dark color
 
 // weather data displayed under searchbar
+
+// display temp , feels like, humidity, description, country,
+// can also display country from geo api

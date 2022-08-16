@@ -6,31 +6,38 @@ export default class Overview extends Component {
     super(props);
 
     this.state = {
+      city: '',
       coord: {
         long: 0,
         lat: 0,
       },
-      city: 'victoria',
       weather: {
         temp: '',
         feel: '',
+        hum: '',
+        desc: '',
+        country: '',
       },
     };
   }
 
   handleButtonClick = () => {
     fetch(
-      `http://api.openweathermap.org/geo/1.0/direct?q=${this.state.city}&appid=8371ba1206036d8bad7d681b9fced4bd`,
+      `http://api.openweathermap.org/geo/1.0/direct?q=${this.props.gifSearch}&appid=8371ba1206036d8bad7d681b9fced4bd`,
       { mode: 'cors' }
     )
       .then((response) => {
         return response.json();
       })
       .then((response) => {
+        console.log(response[0].country);
         this.setState({
           coord: {
             long: response[0].lon,
             lat: response[0].lat,
+          },
+          weather: {
+            country: response[0].country,
           },
         });
       });
@@ -46,20 +53,38 @@ export default class Overview extends Component {
         console.log(response);
         this.setState({
           weather: {
-            temp: response.main.feels_like,
-            feel: response.weather[0].description,
+            temp: response.main.temp,
+            feel: response.main.feels_like,
+            hum: response.main.humidity,
+            desc: response.weather[0].description,
+            country: this.state.weather.country,
           },
         });
       });
+
+    // return (
+    //   <li>
+    //     {this.props.gifSearch} {this.state.weather.temp}{' '}
+    //     {this.state.weather.feel}
+    //   </li>
+    // );
   };
+
+  // is there a way to do this differently? like return jsx on handlebuttonclick() call?
 
   render() {
     return (
       <div>
-        <button onClick={this.handleButtonClick}>destroy all plants</button>
-        <li>
-          {this.state.weather.temp} and {this.state.weather.feel}
-        </li>
+        {this.props.isSubmitting ? this.handleButtonClick() : ''}
+        {/* <button onClick={this.handleButtonClick}>destroy all plants</button> */}
+        <div>
+          <li>{this.props.gifSearch}</li>
+          <li>{this.state.weather.temp}</li>
+          <li>{this.state.weather.feel}</li>
+          <li>{this.state.weather.hum}</li>
+          <li>{this.state.weather.desc}</li>
+          <li>{this.state.weather.country}</li>
+        </div>
       </div>
     );
   }
