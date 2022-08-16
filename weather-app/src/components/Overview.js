@@ -6,7 +6,11 @@ export default class Overview extends Component {
     super(props);
 
     this.state = {
-      weatherObj: '',
+      coord: {
+        long: 0,
+        lat: 0,
+      },
+      city: 'victoria',
       weather: {
         temp: '',
         feel: '',
@@ -16,7 +20,23 @@ export default class Overview extends Component {
 
   handleButtonClick = () => {
     fetch(
-      `https://api.openweathermap.org/data/2.5/weather?lat=48&lon=123&appid=8371ba1206036d8bad7d681b9fced4bd`,
+      `http://api.openweathermap.org/geo/1.0/direct?q=${this.state.city}&appid=8371ba1206036d8bad7d681b9fced4bd`,
+      { mode: 'cors' }
+    )
+      .then((response) => {
+        return response.json();
+      })
+      .then((response) => {
+        this.setState({
+          coord: {
+            long: response[0].lon,
+            lat: response[0].lat,
+          },
+        });
+      });
+
+    fetch(
+      `https://api.openweathermap.org/data/2.5/weather?units=metric&lat=${this.state.coord.lat}&lon=${this.state.coord.long}&appid=8371ba1206036d8bad7d681b9fced4bd`,
       { mode: 'cors' }
     )
       .then((response) => {
@@ -25,7 +45,6 @@ export default class Overview extends Component {
       .then((response) => {
         console.log(response);
         this.setState({
-          weatherObj: response,
           weather: {
             temp: response.main.feels_like,
             feel: response.weather[0].description,
