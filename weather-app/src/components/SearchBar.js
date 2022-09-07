@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
-import GifAPI from './GifAPI';
 import Overview from './Overview';
-// import Overview from './Overview';
-
-// right now searchbar is the overview mode code over and clean it so logic makes sense
 
 export class SearchBar extends Component {
   constructor(props) {
@@ -35,73 +31,18 @@ export class SearchBar extends Component {
     });
   };
 
-  handleSubmit = (e) => {
+  handleSubmit = async (e) => {
     e.preventDefault();
     this.setState({
-      input: '',
       gifSearch: this.state.input,
       isSubmitting: true,
     });
 
-    fetch(
-      `https://api.giphy.com/v1/gifs/translate?api_key=Y3N6ACeh4OhO4q5qG0Z7Sgbk5KIrzRSY&s=${this.state.input}`,
-      { mode: 'cors' }
-    )
-      .then((response) => {
-        return response.json();
-      })
-      .then((response) => {
-        this.setState({
-          imgSrc: response.data.images.original.url,
-          // isSubmitting: false,
-        });
-      });
+    console.log('gifsearch:', this.state.gifSearch);
+    console.log('input:', this.state.input);
 
-    fetch(
-      `http://api.openweathermap.org/geo/1.0/direct?q=${this.state.input}&appid=8371ba1206036d8bad7d681b9fced4bd`,
-      { mode: 'cors' }
-    )
-      .then((response) => {
-        return response.json();
-      })
-      .then((response) => {
-        console.log(response[0].country);
-        this.setState({
-          coord: {
-            long: response[0].lon,
-            lat: response[0].lat,
-          },
-          weather: {
-            country: response[0].country,
-          },
-        });
-      });
-
-    fetch(
-      `https://api.openweathermap.org/data/2.5/weather?units=metric&lat=${this.state.coord.lat}&lon=${this.state.coord.long}&appid=8371ba1206036d8bad7d681b9fced4bd`,
-      { mode: 'cors' }
-    )
-      .then((response) => {
-        return response.json();
-      })
-      .then((response) => {
-        console.log(response);
-        this.setState({
-          // isSubmitting: false,
-          weather: {
-            temp: response.main.temp,
-            feel: response.main.feels_like,
-            hum: response.main.humidity,
-            desc: response.weather[0].description,
-            country: this.state.weather.country,
-          },
-        });
-      });
-  };
-
-  handleApiGif = (gifSearch) => {
     // fetch(
-    //   `https://api.giphy.com/v1/gifs/translate?api_key=Y3N6ACeh4OhO4q5qG0Z7Sgbk5KIrzRSY&s=${gifSearch}`,
+    //   `https://api.giphy.com/v1/gifs/translate?api_key=Y3N6ACeh4OhO4q5qG0Z7Sgbk5KIrzRSY&s=${this.state.input}`,
     //   { mode: 'cors' }
     // )
     //   .then((response) => {
@@ -110,60 +51,38 @@ export class SearchBar extends Component {
     //   .then((response) => {
     //     this.setState({
     //       imgSrc: response.data.images.original.url,
-    //       isSubmitting: false,
+    //       // isSubmitting: false,
     //     });
     //   });
-    // fetch(
-    //   `http://api.openweathermap.org/geo/1.0/direct?q=${gifSearch}&appid=8371ba1206036d8bad7d681b9fced4bd`,
-    //   { mode: 'cors' }
-    // )
-    //   .then((response) => {
-    //     return response.json();
-    //   })
-    //   .then((response) => {
-    //     console.log(response[0].country);
-    //     this.setState({
-    //       coord: {
-    //         long: response[0].lon,
-    //         lat: response[0].lat,
-    //       },
-    //       weather: {
-    //         country: response[0].country,
-    //       },
-    //     });
-    //   });
-    // fetch(
-    //   `https://api.openweathermap.org/data/2.5/weather?units=metric&lat=${this.state.coord.lat}&lon=${this.state.coord.long}&appid=8371ba1206036d8bad7d681b9fced4bd`,
-    //   { mode: 'cors' }
-    // )
-    //   .then((response) => {
-    //     return response.json();
-    //   })
-    //   .then((response) => {
-    //     console.log(response);
-    //     this.setState({
-    //       isSubmitting: false,
-    //       weather: {
-    //         temp: response.main.temp,
-    //         feel: response.main.feels_like,
-    //         hum: response.main.humidity,
-    //         desc: response.weather[0].description,
-    //         country: this.state.weather.country,
-    //       },
-    //     });
-    //   });
-  };
 
-  handleApiWeather = (gifSearch) => {
+    const cordsRes = await (
+      await fetch(
+        `http://api.openweathermap.org/geo/1.0/direct?q=${this.state.input}&appid=8371ba1206036d8bad7d681b9fced4bd`,
+        { mode: 'cors' }
+      )
+    ).json();
+
+    this.setState({
+      coord: {
+        long: cordsRes[0].lon,
+        lat: cordsRes[0].lat,
+      },
+      weather: {
+        country: cordsRes[0].country,
+      },
+    });
+
+    console.log('Coords:', cordsRes);
+
     // fetch(
-    //   `http://api.openweathermap.org/geo/1.0/direct?q=${gifSearch}&appid=8371ba1206036d8bad7d681b9fced4bd`,
+    //   `http://api.openweathermap.org/geo/1.0/direct?q=${this.state.input}&appid=8371ba1206036d8bad7d681b9fced4bd`,
     //   { mode: 'cors' }
     // )
     //   .then((response) => {
     //     return response.json();
     //   })
     //   .then((response) => {
-    //     console.log(response[0].country);
+    //     console.log('coords', response);
     //     this.setState({
     //       coord: {
     //         long: response[0].lon,
@@ -174,33 +93,35 @@ export class SearchBar extends Component {
     //       },
     //     });
     //   });
-    // fetch(
-    //   `https://api.openweathermap.org/data/2.5/weather?units=metric&lat=${this.state.coord.lat}&lon=${this.state.coord.long}&appid=8371ba1206036d8bad7d681b9fced4bd`,
-    //   { mode: 'cors' }
-    // )
-    //   .then((response) => {
-    //     return response.json();
-    //   })
-    //   .then((response) => {
-    //     console.log(response);
-    //     this.setState({
-    //       isSubmitting: false,
-    //       weather: {
-    //         temp: response.main.temp,
-    //         feel: response.main.feels_like,
-    //         hum: response.main.humidity,
-    //         desc: response.weather[0].description,
-    //         country: this.state.weather.country,
-    //       },
-    //     });
-    //   });
+
+    const weatherRes = await (
+      await fetch(
+        `https://api.openweathermap.org/data/2.5/weather?units=metric&lat=${this.state.coord.lat}&lon=${this.state.coord.long}&appid=8371ba1206036d8bad7d681b9fced4bd`,
+        { mode: 'cors' }
+      )
+    ).json();
+
+    this.setState({
+      // input: '',
+      weather: {
+        temp: weatherRes.main.temp,
+        feel: weatherRes.main.feels_like,
+        hum: weatherRes.main.humidity,
+        desc: weatherRes.weather[0].description,
+        // country: this.state.weather.country,
+      },
+    });
+
+    // debuging
+    console.log(this.state.input, weatherRes);
+    console.log(this.state.gifSearch, cordsRes);
   };
 
   render() {
     return (
       <>
         <div>
-          <form onSubmit={this.handleSubmit}>
+          <form onSubmit={this.state.input !== '' ? this.handleSubmit : null}>
             <input
               onChange={this.handleInputChange}
               type="text"
@@ -211,19 +132,16 @@ export class SearchBar extends Component {
           </form>
         </div>
 
-        <div>
+        {/* <div>
           <img alt="" src={this.state.imgSrc}></img>
-        </div>
+        </div> */}
 
         <div>
-          {this.state.isSubmitting ? (
-            <Overview
-              weather={this.state.weather}
-              isSubmitting={this.state.isSubmitting}
-            />
-          ) : (
-            ''
-          )}
+          <Overview
+            isSubmitting={this.state.isSubmitting}
+            gifSearch={this.state.gifSearch}
+            weather={this.state.weather}
+          />
         </div>
       </>
     );
