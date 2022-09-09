@@ -1,0 +1,33 @@
+
+.main {
+    /* background-color: rgb(144, 144, 207); */
+}
+
+.searchbar-container {
+
+}
+
+.inputContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.formInput {
+    margin: 5px;
+}
+
+.searchBtn{
+    width: 15px;
+}
+
+.listContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+li {
+    list-style: none;
+}

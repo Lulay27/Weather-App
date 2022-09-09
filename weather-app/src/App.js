@@ -1,12 +1,16 @@
 import MainPage from './components/MainPage';
 import Overview from './components/Overview';
 import { SearchBar } from './components/SearchBar';
+import './styles/global.css';
 
 function App() {
   return (
     <div>
+      {/* header
+      main
+      footer */}
       <MainPage />
-      <SearchBar />
+      {/* <SearchBar /> */}
     </div>
   );
 }

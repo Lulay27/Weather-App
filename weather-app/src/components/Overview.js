@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import styles from './componentStyles.module.css';
 
 export default class Overview extends Component {
   constructor(props) {
@@ -9,7 +10,7 @@ export default class Overview extends Component {
     return (
       <>
         {this.props.isSubmitting ? (
-          <div>
+          <div className={styles.listContainer}>
             <li>
               Location: {this.props.gifSearch},{this.props.weather.country}
             </li>
