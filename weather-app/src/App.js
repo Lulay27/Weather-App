@@ -1,16 +1,10 @@
-import MainPage from './components/MainPage';
-import Overview from './components/Overview';
-import { SearchBar } from './components/SearchBar';
+import { MainPage } from './components/MainPage';
 import './styles/global.css';
 
 function App() {
   return (
     <div>
-      {/* header
-      main
-      footer */}
       <MainPage />
-      {/* <SearchBar /> */}
     </div>
   );
 }

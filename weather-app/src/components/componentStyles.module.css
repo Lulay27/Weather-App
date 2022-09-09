@@ -1,6 +1,23 @@
 
 .main {
-    /* background-color: rgb(144, 144, 207); */
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+}
+
+.sidePannel {
+    height: auto;
+    order: 1;
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.weatherData {
+    height: auto;
+    width: 100%;
+    order: 0;
 }
 
 .searchbar-container {
@@ -8,9 +25,9 @@
 }
 
 .inputContainer {
-    display: flex;
+    /* display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: center; */
 }
 
 .formInput {
@@ -22,10 +39,10 @@
 }
 
 .listContainer {
-    display: flex;
+    /* display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    align-items: center; */
 }
 
 li {
