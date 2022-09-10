@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import Overview from './Overview';
+import SidePanelData from './SidePanelData';
 import styles from './componentStyles.module.css';
 import search from '../public/search.png';
+import WeatherDisplay from './WeatherDisplay';
 
 export class MainPage extends Component {
   constructor(props) {
@@ -9,7 +10,7 @@ export class MainPage extends Component {
 
     this.state = {
       input: '',
-      gifSearch: '',
+      search: '',
       isSubmitting: false,
       imgSrc: '',
       city: '',
@@ -33,7 +34,7 @@ export class MainPage extends Component {
     try {
       e.preventDefault();
       this.setState({
-        gifSearch: this.state.input,
+        search: this.state.input,
         isSubmitting: true,
       });
 
@@ -90,13 +91,17 @@ export class MainPage extends Component {
                 ></input>
               </div>
             </form>
-            <div>Weather Details</div>
+            <WeatherDisplay
+              isSubmitting={this.state.isSubmitting}
+              search={this.state.search}
+              weather={this.state.weather}
+            />
           </div>
           <div>
-            <Overview
+            <SidePanelData
               className={styles.weatherData}
               isSubmitting={this.state.isSubmitting}
-              gifSearch={this.state.gifSearch}
+              search={this.state.search}
               weather={this.state.weather}
             />
           </div>
