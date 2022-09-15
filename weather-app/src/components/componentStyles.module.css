@@ -1,14 +1,40 @@
 
 .main {
-    
     display: grid;
     grid-template-columns: 3fr 1fr;
+    color: white;
+    height: 500px;
+}
+
+body{
+}
+
+.flexcenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.temperature{
+    font-size: 120px;
+}
+
+.city {
+    font-size: 100px;
+}
+
+.forcast {
+    /* display: flex;
+    flex-direction: column;
+    justify-content: center; */
+    margin: 15px;
+    font-size: 30px;
 }
 
 .sidePannel {
     height: auto;
     order: 1;
-    width: 250px;
+    width: 100%;
     display: flex;
     flex-direction: column;
     backdrop-filter: blur(10px);
@@ -17,9 +43,11 @@
 }
 
 .weatherData {
-    height: auto;
-    width: 100%;
     order: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
 }
 
 .searchbar-container {
@@ -38,12 +66,18 @@
     margin-right: 5px;
 }
 
-.searchBtn{
+.searchBtn {
     width: 15px;
 }
 
-.listContainer {
-    
+.sidePanelContainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    width: 50em;
+}
+
+.weatherDisplayContainer {
+
 }
 
 li {

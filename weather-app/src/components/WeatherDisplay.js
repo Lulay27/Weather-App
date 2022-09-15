@@ -9,8 +9,8 @@ export default class WeatherDisplay extends Component {
     return (
       <>
         {this.props.isSubmitting ? (
-          <div className={styles.listContainer}>
-            <h1>Weather Statistics</h1>
+          <div className={styles.weatherDisplayContainer}>
+            <h3>Weather Statistics</h3>
             <li>Feels like: {this.props.weather.feel}</li>
             <li>Humidty: {this.props.weather.hum}</li>
             <li>Forcast: {this.props.weather.desc}</li>

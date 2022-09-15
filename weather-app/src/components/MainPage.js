@@ -97,9 +97,8 @@ export class MainPage extends Component {
               weather={this.state.weather}
             />
           </div>
-          <div>
+          <div className={styles.weatherData}>
             <SidePanelData
-              className={styles.weatherData}
               isSubmitting={this.state.isSubmitting}
               search={this.state.search}
               weather={this.state.weather}
