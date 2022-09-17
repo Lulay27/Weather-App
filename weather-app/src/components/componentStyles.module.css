@@ -3,7 +3,7 @@
     display: grid;
     grid-template-columns: 3fr 1fr;
     color: white;
-    height: 500px;
+    min-height: 500px;
 }
 
 body{
@@ -71,13 +71,13 @@ body{
 }
 
 .sidePanelContainer {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    width: 50em;
+    
 }
 
 .weatherDisplayContainer {
-
+    display: grid;
+    grid-template-columns: 1fr 2fr 2fr;
+    min-width: 50em;
 }
 
 li {

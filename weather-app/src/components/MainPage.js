@@ -91,14 +91,14 @@ export class MainPage extends Component {
                 ></input>
               </div>
             </form>
-            <WeatherDisplay
+            <SidePanelData
               isSubmitting={this.state.isSubmitting}
               search={this.state.search}
               weather={this.state.weather}
             />
           </div>
           <div className={styles.weatherData}>
-            <SidePanelData
+            <WeatherDisplay
               isSubmitting={this.state.isSubmitting}
               search={this.state.search}
               weather={this.state.weather}
