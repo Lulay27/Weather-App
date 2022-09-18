@@ -3,6 +3,7 @@ import SidePanelData from './SidePanelData';
 import styles from './componentStyles.module.css';
 import search from '../public/search.png';
 import WeatherDisplay from './WeatherDisplay';
+import SidePanelHistory from './SidePanelHistory';
 
 export class MainPage extends Component {
   constructor(props) {
@@ -12,14 +13,15 @@ export class MainPage extends Component {
       input: '',
       search: '',
       isSubmitting: false,
-      imgSrc: '',
       city: '',
+      cityArr: [],
       weather: {
         temp: '',
         feel: '',
         hum: '',
         desc: '',
         country: '',
+        icon: '',
       },
     };
   }
@@ -36,6 +38,7 @@ export class MainPage extends Component {
       this.setState({
         search: this.state.input,
         isSubmitting: true,
+        cityArr: this.state.cityArr.concat([this.state.input]),
       });
 
       const cordsRes = await (
@@ -59,6 +62,7 @@ export class MainPage extends Component {
           hum: weatherRes.main.humidity,
           desc: weatherRes.weather[0].description,
           country: cordsRes[0].country,
+          icon: weatherRes.weather[0].icon,
         },
       });
 
@@ -73,7 +77,7 @@ export class MainPage extends Component {
     return (
       <>
         <div className={styles.main}>
-          <div className={styles.sidePannel}>
+          <div className={styles.sidePanel}>
             <form onSubmit={this.state.input !== '' ? this.handleSubmit : null}>
               <div className={styles.inputContainer}>
                 <input
@@ -95,6 +99,10 @@ export class MainPage extends Component {
               isSubmitting={this.state.isSubmitting}
               search={this.state.search}
               weather={this.state.weather}
+            />
+            <SidePanelHistory
+              isSubmitting={this.state.isSubmitting}
+              cityArr={this.state.cityArr}
             />
           </div>
           <div className={styles.weatherData}>
