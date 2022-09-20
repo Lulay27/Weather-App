@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import styles from './componentStyles.module.css';
-import sun from '../public/sun.png';
 
 export default class SidePanelData extends Component {
   render() {
@@ -16,7 +15,7 @@ export default class SidePanelData extends Component {
               {tempz}
             </li>
             <li className={`${styles.city} ${styles.flexcenter}`}>
-              {this.props.search}
+              {this.props.cityArr[this.props.cityArr.length - 1]}
             </li>
             <li className={` ${styles.forcast}`}>
               <img src={iconURL} width="80px" alt="forcast-img"></img>

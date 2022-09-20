@@ -7,11 +7,12 @@ export default class SidePanelHistory extends Component {
   render() {
     return (
       <div>
+        {this.props.isSubmitting ? <h2>Recent Searches</h2> : null}
         {this.props.isSubmitting
           ? this.props.cityArr.map((city) => {
-              return <h1>{city}</h1>;
+              return <div>{city}</div>;
             })
-          : ''}
+          : null}
       </div>
     );
   }

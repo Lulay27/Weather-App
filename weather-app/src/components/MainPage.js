@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import SidePanelData from './SidePanelData';
 import styles from './componentStyles.module.css';
-import search from '../public/search.png';
+// import searchImg from '../public/search.png';
 import WeatherDisplay from './WeatherDisplay';
 import SidePanelHistory from './SidePanelHistory';
 
@@ -11,9 +11,8 @@ export class MainPage extends Component {
 
     this.state = {
       input: '',
-      search: '',
       isSubmitting: false,
-      city: '',
+      errorMsg: '',
       cityArr: [],
       weather: {
         temp: '',
@@ -32,13 +31,22 @@ export class MainPage extends Component {
     });
   };
 
+  handleError = (e) => {
+    e.preventDefault();
+    this.setState({
+      input: '',
+      isSubmitting: false,
+      errorMsg: 'Enter a valid city name',
+    });
+  };
+
   handleSubmit = async (e) => {
     try {
       e.preventDefault();
       this.setState({
-        search: this.state.input,
         isSubmitting: true,
         cityArr: this.state.cityArr.concat([this.state.input]),
+        errorMsg: '',
       });
 
       const cordsRes = await (
@@ -66,7 +74,7 @@ export class MainPage extends Component {
         },
       });
 
-      console.log('city weather data:', weatherRes);
+      // console.log('city weather data:', weatherRes);
     } catch (err) {
       console.log(err);
       alert('Enter a valid city Name');
@@ -78,7 +86,11 @@ export class MainPage extends Component {
       <>
         <div className={styles.main}>
           <div className={styles.sidePanel}>
-            <form onSubmit={this.state.input !== '' ? this.handleSubmit : null}>
+            <form
+              onSubmit={
+                this.state.input !== '' ? this.handleSubmit : this.handleError
+              }
+            >
               <div className={styles.inputContainer}>
                 <input
                   className={styles.formInput}
@@ -87,17 +99,17 @@ export class MainPage extends Component {
                   placeholder="Enter a City"
                   value={this.state.input}
                 ></input>
-                <input
+                <div className={styles.errorMsg}>{this.state.errorMsg}</div>
+                {/* <input
                   className={styles.searchBtn}
                   type="image"
-                  src={search}
-                  alt="search"
-                ></input>
+                  src={searchImg}
+                  alt="searchImg"
+                ></input> */}
               </div>
             </form>
             <SidePanelData
               isSubmitting={this.state.isSubmitting}
-              search={this.state.search}
               weather={this.state.weather}
             />
             <SidePanelHistory
@@ -108,7 +120,7 @@ export class MainPage extends Component {
           <div className={styles.weatherData}>
             <WeatherDisplay
               isSubmitting={this.state.isSubmitting}
-              search={this.state.search}
+              cityArr={this.state.cityArr}
               weather={this.state.weather}
             />
           </div>
