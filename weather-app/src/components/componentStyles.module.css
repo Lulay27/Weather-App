@@ -12,7 +12,7 @@
 }
 
 .temperature {
-  font-size: 120px;
+  font-size: 12vw;
 }
 
 .city {
@@ -24,7 +24,7 @@
     flex-direction: column;
     justify-content: center; */
   margin: 15px;
-  font-size: 30px;
+  font-size: 3vw;
 }
 
 .sidePanel {
@@ -52,7 +52,7 @@
 .formInput {
   border: none;
   margin-top: 30px;
-  margin-right: 5px;
+  margin-right: 15px;
   min-width: 250px;
   min-height: 40px;
 }
@@ -84,7 +84,7 @@ li {
   list-style: none;
 }
 
-@media screen and (max-width: 1150px) {
+@media screen and (max-width: 1080px) {
   .sidePanel {
     display: none;
   }

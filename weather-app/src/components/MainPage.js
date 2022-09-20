@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import SidePanelData from './SidePanelData';
 import styles from './componentStyles.module.css';
-// import searchImg from '../public/search.png';
+import uniqid from 'uniqid';
 import WeatherDisplay from './WeatherDisplay';
 import SidePanelHistory from './SidePanelHistory';
 
@@ -10,10 +10,13 @@ export class MainPage extends Component {
     super(props);
 
     this.state = {
-      input: '',
+      city: {
+        text: '',
+        id: uniqid(),
+      },
+      cityArr: [],
       isSubmitting: false,
       errorMsg: '',
-      cityArr: [],
       weather: {
         temp: '',
         feel: '',
@@ -27,14 +30,19 @@ export class MainPage extends Component {
 
   handleInputChange = (e) => {
     this.setState({
-      input: e.target.value,
+      city: {
+        text: e.target.value,
+        id: uniqid(),
+      },
     });
   };
 
   handleError = (e) => {
     e.preventDefault();
     this.setState({
-      input: '',
+      city: {
+        text: 'poop',
+      },
       isSubmitting: false,
       errorMsg: 'Enter a valid city name',
     });
@@ -44,14 +52,18 @@ export class MainPage extends Component {
     try {
       e.preventDefault();
       this.setState({
+        city: {
+          text: '',
+          id: uniqid(),
+        },
         isSubmitting: true,
-        cityArr: this.state.cityArr.concat([this.state.input]),
+        cityArr: this.state.cityArr.concat([this.state.city]),
         errorMsg: '',
       });
 
       const cordsRes = await (
         await fetch(
-          `http://api.openweathermap.org/geo/1.0/direct?q=${this.state.input}&appid=8371ba1206036d8bad7d681b9fced4bd`,
+          `http://api.openweathermap.org/geo/1.0/direct?q=${this.state.city.text}&appid=8371ba1206036d8bad7d681b9fced4bd`,
           { mode: 'cors' }
         )
       ).json();
@@ -97,15 +109,9 @@ export class MainPage extends Component {
                   onChange={this.handleInputChange}
                   type="text"
                   placeholder="Enter a City"
-                  value={this.state.input}
+                  value={this.state.city.text}
                 ></input>
                 <div className={styles.errorMsg}>{this.state.errorMsg}</div>
-                {/* <input
-                  className={styles.searchBtn}
-                  type="image"
-                  src={searchImg}
-                  alt="searchImg"
-                ></input> */}
               </div>
             </form>
             <SidePanelData

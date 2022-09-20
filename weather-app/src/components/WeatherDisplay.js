@@ -15,7 +15,7 @@ export default class SidePanelData extends Component {
               {tempz}
             </li>
             <li className={`${styles.city} ${styles.flexcenter}`}>
-              {this.props.cityArr[this.props.cityArr.length - 1]}
+              {this.props.cityArr[this.props.cityArr.length - 1].text}
             </li>
             <li className={` ${styles.forcast}`}>
               <img src={iconURL} width="80px" alt="forcast-img"></img>
