@@ -10,14 +10,12 @@ export class MainPage extends Component {
     super(props);
 
     this.state = {
-      city: {
-        text: '',
-        id: uniqid(),
-      },
       cityArr: [],
       isSubmitting: false,
       errorMsg: '',
-      weather: {
+      city: {
+        text: '',
+        id: uniqid(),
         temp: '',
         feel: '',
         hum: '',
@@ -43,23 +41,35 @@ export class MainPage extends Component {
       city: {
         text: 'poop',
       },
-      isSubmitting: false,
       errorMsg: 'Enter a valid city name',
+    });
+    console.log('hello i am inside error ');
+  };
+
+  handleHistory = (city) => {
+    this.setState({
+      city: {
+        text: city.text,
+        id: uniqid(),
+      },
+      cityArr: this.state.cityArr.concat([city]),
+    });
+  };
+
+  finishSubmit = () => {
+    this.setState({
+      cityArr: this.state.cityArr.concat([this.state.city]),
+      city: {
+        text: '',
+        id: uniqid(),
+      },
+      isSubmitting: 'true',
     });
   };
 
   handleSubmit = async (e) => {
     try {
       e.preventDefault();
-      this.setState({
-        city: {
-          text: '',
-          id: uniqid(),
-        },
-        isSubmitting: true,
-        cityArr: this.state.cityArr.concat([this.state.city]),
-        errorMsg: '',
-      });
 
       const cordsRes = await (
         await fetch(
@@ -75,16 +85,22 @@ export class MainPage extends Component {
         )
       ).json();
 
-      this.setState({
-        weather: {
-          temp: weatherRes.main.temp,
-          feel: weatherRes.main.feels_like,
-          hum: weatherRes.main.humidity,
-          desc: weatherRes.weather[0].description,
-          country: cordsRes[0].country,
-          icon: weatherRes.weather[0].icon,
+      this.setState(
+        {
+          errorMsg: '',
+          city: {
+            text: this.state.city.text,
+            id: uniqid(),
+            temp: weatherRes.main.temp,
+            feel: weatherRes.main.feels_like,
+            hum: weatherRes.main.humidity,
+            desc: weatherRes.weather[0].description,
+            country: cordsRes[0].country,
+            icon: weatherRes.weather[0].icon,
+          },
         },
-      });
+        this.finishSubmit
+      );
 
       // console.log('city weather data:', weatherRes);
     } catch (err) {
@@ -100,7 +116,9 @@ export class MainPage extends Component {
           <div className={styles.sidePanel}>
             <form
               onSubmit={
-                this.state.input !== '' ? this.handleSubmit : this.handleError
+                this.state.city.text !== ''
+                  ? this.handleSubmit
+                  : this.handleError
               }
             >
               <div className={styles.inputContainer}>
@@ -109,25 +127,25 @@ export class MainPage extends Component {
                   onChange={this.handleInputChange}
                   type="text"
                   placeholder="Enter a City"
-                  value={this.state.city.text}
                 ></input>
                 <div className={styles.errorMsg}>{this.state.errorMsg}</div>
               </div>
             </form>
-            <SidePanelData
+            {/* <SidePanelData
               isSubmitting={this.state.isSubmitting}
-              weather={this.state.weather}
-            />
-            <SidePanelHistory
+              city={this.state.city}
+            /> */}
+            {/* <SidePanelHistory
               isSubmitting={this.state.isSubmitting}
               cityArr={this.state.cityArr}
-            />
+              handleHistory={this.handleHistory}
+            /> */}
           </div>
           <div className={styles.weatherData}>
             <WeatherDisplay
               isSubmitting={this.state.isSubmitting}
               cityArr={this.state.cityArr}
-              weather={this.state.weather}
+              city={this.state.city}
             />
           </div>
         </div>

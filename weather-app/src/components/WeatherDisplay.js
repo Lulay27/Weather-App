@@ -3,9 +3,17 @@ import styles from './componentStyles.module.css';
 
 export default class SidePanelData extends Component {
   render() {
-    const tempz = Math.round(this.props.weather.temp) + '°';
-    const iconId = this.props.weather.icon;
-    const iconURL = `http://openweathermap.org/img/wn/${iconId}@2x.png`;
+    let latestCity;
+    let tempz;
+    let iconId;
+    let iconURL;
+
+    if (this.props.cityArr.length > 0) {
+      latestCity = this.props.cityArr[this.props.cityArr.length - 1];
+      tempz = Math.round(latestCity.temp) + '°';
+      iconId = latestCity.icon;
+      iconURL = `http://openweathermap.org/img/wn/${iconId}@2x.png`;
+    }
 
     return (
       <>
@@ -15,11 +23,11 @@ export default class SidePanelData extends Component {
               {tempz}
             </li>
             <li className={`${styles.city} ${styles.flexcenter}`}>
-              {this.props.cityArr[this.props.cityArr.length - 1].text}
+              {latestCity.text}
             </li>
             <li className={` ${styles.forcast}`}>
               <img src={iconURL} width="80px" alt="forcast-img"></img>
-              <div>{this.props.weather.desc}</div>
+              <div>{latestCity.desc}</div>
             </li>
           </div>
         ) : (
