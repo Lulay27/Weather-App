@@ -131,15 +131,15 @@ export class MainPage extends Component {
                 <div className={styles.errorMsg}>{this.state.errorMsg}</div>
               </div>
             </form>
-            {/* <SidePanelData
+            <SidePanelData
               isSubmitting={this.state.isSubmitting}
-              city={this.state.city}
-            /> */}
-            {/* <SidePanelHistory
+              cityArr={this.state.cityArr}
+            />
+            <SidePanelHistory
               isSubmitting={this.state.isSubmitting}
               cityArr={this.state.cityArr}
               handleHistory={this.handleHistory}
-            /> */}
+            />
           </div>
           <div className={styles.weatherData}>
             <WeatherDisplay
