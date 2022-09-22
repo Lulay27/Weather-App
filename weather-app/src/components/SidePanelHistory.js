@@ -11,14 +11,14 @@ export default class SidePanelHistory extends Component {
         {this.props.isSubmitting
           ? this.props.cityArr.map((city) => {
               return (
-                <button
-                  onClick={() => {
-                    this.props.handleHistory(city.text);
-                  }}
+                <div
+                  // onClick={() => {
+                  //   this.props.handleHistory(city.text);
+                  // }}
                   key={city.id}
                 >
                   {city.text}
-                </button>
+                </div>
               );
             })
           : null}
