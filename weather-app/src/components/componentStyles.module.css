@@ -12,19 +12,16 @@
 }
 
 .temperature {
-  font-size: 12vw;
+  font-size: 6em;
 }
 
 .city {
-  font-size: 10vw;
+  font-size: 7em;
 }
 
 .forcast {
-  /* display: flex;
-    flex-direction: column;
-    justify-content: center; */
-  margin: 15px;
-  font-size: 3vw;
+  /* margin: 15px; */
+  font-size: 2em;
 }
 
 .sidePanel {
@@ -38,9 +35,6 @@
 
 .weatherData {
   order: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .inputContainer {
@@ -75,8 +69,14 @@ input[type='text'] {
 }
 
 .weatherDisplayContainer {
-  display: grid;
-  grid-template-columns: 1fr 2fr 2fr;
+  /* display: grid; */
+  /* grid-template-columns: 1fr 1fr 1fr; */
+  display: flex;
+  /* height: 80%; */
+  /* margin: auto; */
+  /* vertical-align: 70%; */
+  margin-top: 150px;
+  justify-content: center;
   min-width: 50em;
 }
 
@@ -88,4 +88,8 @@ li {
   .sidePanel {
     display: none;
   }
+}
+
+.titleDate {
+  margin-left: 20px;
 }

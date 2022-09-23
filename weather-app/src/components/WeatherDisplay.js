@@ -8,6 +8,8 @@ export default class SidePanelData extends Component {
     let iconId;
     let iconURL;
 
+    let time = new Date();
+
     if (this.props.cityArr.length > 0) {
       latestCity = this.props.cityArr[this.props.cityArr.length - 1];
       tempz = Math.round(latestCity.temp) + '°';
@@ -17,6 +19,11 @@ export default class SidePanelData extends Component {
 
     return (
       <>
+        <div className={styles.titleDate}>
+          <h1>Weather Application</h1>
+          <h2>{time.toLocaleTimeString()}</h2>
+        </div>
+
         {this.props.isSubmitting ? (
           <div className={styles.weatherDisplayContainer}>
             <li className={`${styles.temperature} ${styles.flexcenter}`}>
