@@ -75,6 +75,7 @@ input[type='text'] {
   /* height: 80%; */
   /* margin: auto; */
   /* vertical-align: 70%; */
+  flex-wrap: wrap;
   margin-top: 150px;
   justify-content: center;
   min-width: 50em;
@@ -84,7 +85,7 @@ li {
   list-style: none;
 }
 
-@media screen and (max-width: 1080px) {
+@media screen and (max-width: 500px) {
   .sidePanel {
     display: none;
   }

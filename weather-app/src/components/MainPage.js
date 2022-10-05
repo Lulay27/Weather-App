@@ -67,6 +67,12 @@ export class MainPage extends Component {
     });
   };
 
+  handleHistoryClick = (id) => {
+    // grab city (with id) clicked in history and concat to array
+    // have array display idk 10 cities in history?
+    // display from top down newest to oldest?
+  };
+
   handleSubmit = async (e) => {
     try {
       e.preventDefault();
