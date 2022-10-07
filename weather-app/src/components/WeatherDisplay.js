@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './componentStyles.module.css';
 
-export default function SidePanelData() {
+export default function SidePanelData(props) {
   let latestCity;
   let tempz;
   let iconId;
@@ -9,10 +9,10 @@ export default function SidePanelData() {
 
   let time = new Date();
 
-  if (this.props.cityArr.length > 0) {
-    latestCity = this.props.cityArr[this.props.cityArr.length - 1];
-    tempz = Math.round(latestCity.temp) + '°';
-    iconId = latestCity.icon;
+  if (props.cityArr.length > 0) {
+    latestCity = props.cityArr[props.cityArr.length - 1];
+    tempz = Math.round(latestCity.main.temp) + '°';
+    iconId = latestCity.weather[0].icon;
     iconURL = `http://openweathermap.org/img/wn/${iconId}@2x.png`;
   }
 
@@ -23,13 +23,13 @@ export default function SidePanelData() {
         <h2>{time.toLocaleTimeString()}</h2>
       </div>
 
-      {this.props.isSubmitting ? (
+      {props.isSubmitting ? (
         <div className={styles.weatherDisplayContainer}>
           <li className={`${styles.temperature} ${styles.flexcenter}`}>
             {tempz}
           </li>
           <li className={`${styles.city} ${styles.flexcenter}`}>
-            {latestCity.text}
+            {latestCity.cityTitle}
           </li>
           <li className={` ${styles.forcast}`}>
             <img src={iconURL} width="80px" alt="forcast-img"></img>

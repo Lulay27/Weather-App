@@ -1,19 +1,19 @@
 import React from 'react';
 
-export default function SidePanelHistory() {
+export default function SidePanelHistory(props) {
   return (
     <div>
-      {this.props.isSubmitting ? <h2>Recent Searches</h2> : null}
-      {this.props.isSubmitting
-        ? this.props.cityArr.map((city) => {
+      {props.isSubmitting ? <h2>Recent Searches</h2> : null}
+      {props.isSubmitting
+        ? props.cityArr.map((cityData) => {
             return (
               <div
                 // onClick={() => {
-                //   this.props.handleHistory(city.text);
+                //   props.handleHistory(city.text);
                 // }}
-                key={city.id}
+                key={cityData.id}
               >
-                {city.text}
+                {cityData.cityTitle}
               </div>
             );
           })

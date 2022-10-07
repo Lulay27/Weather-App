@@ -31,6 +31,8 @@ export default function MainPage() {
         const cityCall = await axios.get(
           `https://api.openweathermap.org/data/2.5/weather?units=metric&lat=${coordCall.data[0].lat}&lon=${coordCall.data[0].lon}&appid=8371ba1206036d8bad7d681b9fced4bd`
         );
+        cityCall.data.cityTitle = input;
+        cityCall.data.id = uniqid();
         setCityData(cityCall.data);
         setIsSubmitting(true);
         addToCityArr(cityCall.data);
@@ -155,26 +157,18 @@ export default function MainPage() {
                 type="text"
                 placeholder="Enter a City"
               ></input>
-              {/* <div className={styles.errorMsg}>{this.state.errorMsg}</div> */}
+              {/* <div className={styles.errorMsg}>{errorMsg}</div> */}
             </div>
           </form>
-          <SidePanelData
+          <SidePanelData isSubmitting={isSubmitting} cityArr={cityArr} />
+          <SidePanelHistory
             isSubmitting={isSubmitting}
-            cityData={cityData}
-            // cityArr={this.state.cityArr}
+            cityArr={cityArr}
+            // handleHistory={this.handleHistory}
           />
-          {/* <SidePanelHistory
-              isSubmitting={this.state.isSubmitting}
-              cityArr={this.state.cityArr}
-              handleHistory={this.handleHistory}
-            />
-          </div>
-          <div className={styles.weatherData}>
-            <WeatherDisplay
-              isSubmitting={this.state.isSubmitting}
-              cityArr={this.state.cityArr}
-              city={this.state.city}
-            /> */}
+        </div>
+        <div className={styles.weatherData}>
+          <WeatherDisplay isSubmitting={isSubmitting} cityArr={cityArr} />
         </div>
       </div>
     </>
