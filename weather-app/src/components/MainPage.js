@@ -12,6 +12,7 @@ export default function MainPage() {
   const [inputFromSubmit, setInputFromSubmit] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [cityArr, setCityArr] = useState([]);
+  const [errorMsg, setErrorMsg] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -22,20 +23,31 @@ export default function MainPage() {
     setCityArr([...cityArr, newCity]);
   };
 
+  const handleInvalidInput = (e) => {
+    e.preventDefault();
+    setErrorMsg('Enter a valid city name');
+  };
+
   useEffect(() => {
     if (input !== '') {
       (async () => {
-        const coordCall = await axios.get(
-          `http://api.openweathermap.org/geo/1.0/direct?q=${input}&appid=8371ba1206036d8bad7d681b9fced4bd`
-        );
-        const cityCall = await axios.get(
-          `https://api.openweathermap.org/data/2.5/weather?units=metric&lat=${coordCall.data[0].lat}&lon=${coordCall.data[0].lon}&appid=8371ba1206036d8bad7d681b9fced4bd`
-        );
-        cityCall.data.cityTitle = input;
-        cityCall.data.id = uniqid();
-        setCityData(cityCall.data);
-        setIsSubmitting(true);
-        addToCityArr(cityCall.data);
+        try {
+          const coordCall = await axios.get(
+            `http://api.openweathermap.org/geo/1.0/direct?q=${input}&appid=8371ba1206036d8bad7d681b9fced4bd`
+          );
+          const cityCall = await axios.get(
+            `https://api.openweathermap.org/data/2.5/weather?units=metric&lat=${coordCall.data[0].lat}&lon=${coordCall.data[0].lon}&appid=8371ba1206036d8bad7d681b9fced4bd`
+          );
+          cityCall.data.cityTitle = input;
+          cityCall.data.id = uniqid();
+          setCityData(cityCall.data);
+          setIsSubmitting(true);
+          addToCityArr(cityCall.data);
+          setErrorMsg('');
+        } catch (err) {
+          console.log(err);
+          setErrorMsg('Enter a valid city name');
+        }
       })();
     }
   }, [inputFromSubmit]);
@@ -149,7 +161,7 @@ export default function MainPage() {
     <>
       <div className={styles.main}>
         <div className={styles.sidePanel}>
-          <form onSubmit={input !== '' ? handleSubmit : null}>
+          <form onSubmit={input !== '' ? handleSubmit : handleInvalidInput}>
             <div className={styles.inputContainer}>
               <input
                 className={styles.formInput}
@@ -157,7 +169,7 @@ export default function MainPage() {
                 type="text"
                 placeholder="Enter a City"
               ></input>
-              {/* <div className={styles.errorMsg}>{errorMsg}</div> */}
+              <div className={styles.errorMsg}>{errorMsg}</div>
             </div>
           </form>
           <SidePanelData isSubmitting={isSubmitting} cityArr={cityArr} />
