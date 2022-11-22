@@ -9,13 +9,10 @@ export default function SidePanelHistory(props) {
       {props.isSubmitting
         ? reversedArray.map((cityData) => {
             return (
-              <div
-                // onClick={() => {
-                //   props.handleHistory(city.text);
-                // }}
-                key={cityData.id}
-              >
-                {cityData.cityTitle}
+              <div key={cityData.id}>
+                <button onClick={() => props.testerFunc(cityData.id)}>
+                  {cityData.cityTitle}
+                </button>
               </div>
             );
           })

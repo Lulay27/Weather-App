@@ -21,5 +21,8 @@ export default App;
 
 // weather data displayed under searchbar
 
-// display temp , feels like, humidity, description, country,
-// can also display country from geo api
+// users login in... can favorite city searches
+// store favorites...
+// since removing Recent Searches instead of displaying latest array
+// display submited form input? thus instead of storing all searches
+// only store Favorite searches for each user

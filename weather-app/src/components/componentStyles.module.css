@@ -78,7 +78,7 @@ input[type='text'] {
   flex-wrap: wrap;
   margin-top: 150px;
   justify-content: center;
-  min-width: 50em;
+  min-width: 15em;
 }
 
 li {

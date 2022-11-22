@@ -6,6 +6,11 @@ import WeatherDisplay from './WeatherDisplay';
 import SidePanelHistory from './SidePanelHistory';
 import axios from 'axios';
 
+// firebase imports
+
+import { db } from '../firebase-config.js';
+import { collection, addDoc } from 'firebase/firestore';
+
 export default function MainPage() {
   const [cityData, setCityData] = useState({});
   const [input, setInput] = useState('');
@@ -28,8 +33,19 @@ export default function MainPage() {
     setErrorMsg('Enter a valid city name');
   };
 
+  const testerFunc = (targetId) => {
+    const tester = cityArr.find((city) => city.id == targetId);
+
+    const constBlah = { ...tester, id: uniqid() };
+
+    setCityArr([...cityArr, constBlah]);
+  };
+
   useEffect(() => {
     if (input !== '') {
+      // testing firebase do i even put it here lol
+      const colRef = collection(db, 'cities');
+
       (async () => {
         try {
           const coordCall = await axios.get(
@@ -38,6 +54,12 @@ export default function MainPage() {
           const cityCall = await axios.get(
             `https://api.openweathermap.org/data/2.5/weather?units=metric&lat=${coordCall.data[0].lat}&lon=${coordCall.data[0].lon}&appid=8371ba1206036d8bad7d681b9fced4bd`
           );
+
+          // firebase adding docs
+          const addingInputToDB = await addDoc(colRef, {
+            name: input,
+          });
+
           cityCall.data.cityTitle = input;
           cityCall.data.id = uniqid();
           setCityData(cityCall.data);
@@ -176,7 +198,7 @@ export default function MainPage() {
           <SidePanelHistory
             isSubmitting={isSubmitting}
             cityArr={cityArr}
-            // handleHistory={this.handleHistory}
+            testerFunc={testerFunc}
           />
         </div>
         <div className={styles.weatherData}>
