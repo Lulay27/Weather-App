@@ -1,14 +1,11 @@
 import MainPage from './components/MainPage';
-import SignedOut from './firebase/SignedOut';
-import SignIn from './firebase/SignIn';
+
 import './styles/global.css';
 
 function App() {
   return (
     <div>
       <MainPage />
-      <SignIn></SignIn>
-      <SignedOut></SignedOut>
     </div>
   );
 }
@@ -30,3 +27,8 @@ export default App;
 // since removing Recent Searches instead of displaying latest array
 // display submited form input? thus instead of storing all searches
 // only store Favorite searches for each user
+
+// set up logic for when logged in...remove sign in button etc
+// signing out makes sign in btn appear again
+// if signed in etc..
+// store each accounts favorite cities
