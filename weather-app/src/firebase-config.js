@@ -1,31 +1,46 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
-import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import {
+  getAuth,
+  signOut,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from 'firebase/auth';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
-  authDomain: 'weatherapp-7f751.firebaseapp.com',
-  projectId: 'weatherapp-7f751',
-  storageBucket: 'weatherapp-7f751.appspot.com',
-  messagingSenderId: '1051460647688',
-  appId: '1:1051460647688:web:06edc9f9757d46acdbcabd',
+  authDomain: 'weather-app-85e1f.firebaseapp.com',
+  projectId: 'weather-app-85e1f',
+  storageBucket: 'weather-app-85e1f.appspot.com',
+  messagingSenderId: '734180277946',
+  appId: '1:734180277946:web:1a1a64f63c71f3ae208c83',
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+export const app = initializeApp(firebaseConfig);
 
 export const db = getFirestore(app);
+
 export const auth = getAuth(app);
 
-const provider = new GoogleAuthProvider();
+// const provider = new GoogleAuthProvider();
+// export const signInWithGoogle = () => {
+//   signInWithPopup(auth, provider)
+//     .then((result) => {
+//       console.log(result);
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//     });
+// };
 
-export const signInWithGoogle = () => {
-  signInWithPopup(auth, provider)
-    .then((result) => {
-      console.log(result);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
+// export const signOutWithGoogle = () => {
+//   signOut(auth)
+//     .then((result) => {
+//       console.log('successful', result);
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//     });
+// };

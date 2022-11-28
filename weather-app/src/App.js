@@ -1,10 +1,14 @@
 import MainPage from './components/MainPage';
+import SignedOut from './firebase/SignedOut';
+import SignIn from './firebase/SignIn';
 import './styles/global.css';
 
 function App() {
   return (
     <div>
       <MainPage />
+      <SignIn></SignIn>
+      <SignedOut></SignedOut>
     </div>
   );
 }
