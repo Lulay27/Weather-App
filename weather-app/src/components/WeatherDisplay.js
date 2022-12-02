@@ -10,7 +10,13 @@ export default function SidePanelData(props) {
   let time = new Date();
 
   if (props.cityArr.length > 0) {
-    latestCity = props.cityArr[props.cityArr.length - 1];
+    // latestCity = props.cityArr[props.cityArr.length - 1];
+
+    // note can move tempz iconid icon url values into main page to avoid if statement
+    // and declaring variables before hand looks poopy
+
+    latestCity = props.cityData;
+
     tempz = Math.round(latestCity.main.temp) + '°';
     iconId = latestCity.weather[0].icon;
     iconURL = `http://openweathermap.org/img/wn/${iconId}@2x.png`;

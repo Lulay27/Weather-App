@@ -47,15 +47,16 @@ export default function MainPage() {
 
   const signInWithGoogle = () => {
     const provider = new GoogleAuthProvider();
+    provider.setCustomParameters({
+      prompt: 'select_account',
+    });
     signInWithPopup(auth, provider)
       .then((result) => {
         console.log(result);
         setEmail(result.user.email);
         setIsLoggedIn(true);
 
-        setDoc(doc(db, 'USERS', result.user.email), {
-          firstName: 'pure',
-        });
+        setDoc(doc(db, 'USERS', result.user.email));
 
         // set isLoggedIn to true in future have signout set that to false
       })
@@ -95,15 +96,6 @@ export default function MainPage() {
     }
   }, [inputFromSubmit]);
 
-  // useEffect(() => {
-  //   // testing firebase do i even put it here lol
-  //   // const colRef = collection(db, 'USERS');
-
-  //   (async () => {
-  //     await setDoc(doc(db, 'USERS', { email }), { favCities: 'swag' });
-  //   })();
-  // }, [email]);
-
   return (
     <>
       <div className={styles.main}>
@@ -127,7 +119,11 @@ export default function MainPage() {
           />
         </div>
         <div className={styles.weatherData}>
-          <WeatherDisplay isSubmitting={isSubmitting} cityArr={cityArr} />
+          <WeatherDisplay
+            isSubmitting={isSubmitting}
+            cityArr={cityArr}
+            cityData={cityData}
+          />
 
           <h1>{isLoggedIn ? `Welcome ${email}` : ''}</h1>
           <button onClick={signInWithGoogle}>SIGN UP BOY</button>
