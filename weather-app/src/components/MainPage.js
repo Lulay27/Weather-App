@@ -7,9 +7,10 @@ import SidePanelHistory from './SidePanelHistory';
 import axios from 'axios';
 
 // firebase imports
-
-import { db } from '../firebase-config.js';
-import { collection, addDoc } from 'firebase/firestore';
+import { db } from '../firebase-config';
+import { collection, addDoc, setDoc, doc, updateDoc } from 'firebase/firestore';
+import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { auth } from '../firebase-config.js';
 
 export default function MainPage() {
   const [cityData, setCityData] = useState({});
@@ -18,6 +19,9 @@ export default function MainPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [cityArr, setCityArr] = useState([]);
   const [errorMsg, setErrorMsg] = useState('');
+
+  const [email, setEmail] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -41,11 +45,27 @@ export default function MainPage() {
     setCityArr([...cityArr, constBlah]);
   };
 
+  const signInWithGoogle = () => {
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        console.log(result);
+        setEmail(result.user.email);
+        setIsLoggedIn(true);
+
+        setDoc(doc(db, 'USERS', result.user.email), {
+          firstName: 'pure',
+        });
+
+        // set isLoggedIn to true in future have signout set that to false
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   useEffect(() => {
     if (input !== '') {
-      // testing firebase do i even put it here lol
-      // const colRef = collection(db, 'cities');
-
       (async () => {
         try {
           const coordCall = await axios.get(
@@ -54,11 +74,6 @@ export default function MainPage() {
           const cityCall = await axios.get(
             `https://api.openweathermap.org/data/2.5/weather?units=metric&lat=${coordCall.data[0].lat}&lon=${coordCall.data[0].lon}&appid=8371ba1206036d8bad7d681b9fced4bd`
           );
-
-          // firebase adding docs
-          // const addingInputToDB = await addDoc(colRef, {
-          //   name: input,
-          // });
 
           cityCall.data.cityTitle = input;
           cityCall.data.id = uniqid();
@@ -72,7 +87,22 @@ export default function MainPage() {
         }
       })();
     }
+
+    if (isLoggedIn) {
+      updateDoc(doc(db, 'USERS', email), {
+        myCity: input,
+      });
+    }
   }, [inputFromSubmit]);
+
+  // useEffect(() => {
+  //   // testing firebase do i even put it here lol
+  //   // const colRef = collection(db, 'USERS');
+
+  //   (async () => {
+  //     await setDoc(doc(db, 'USERS', { email }), { favCities: 'swag' });
+  //   })();
+  // }, [email]);
 
   return (
     <>
@@ -97,11 +127,12 @@ export default function MainPage() {
           />
         </div>
         <div className={styles.weatherData}>
-          <WeatherDisplay
-            input={input} // added city name here for firestorage
-            isSubmitting={isSubmitting}
-            cityArr={cityArr}
-          />
+          <WeatherDisplay isSubmitting={isSubmitting} cityArr={cityArr} />
+
+          <h1>{isLoggedIn ? `Welcome ${email}` : ''}</h1>
+          <button onClick={signInWithGoogle}>SIGN UP BOY</button>
+
+          <button>SIGN OUT G</button>
         </div>
       </div>
     </>

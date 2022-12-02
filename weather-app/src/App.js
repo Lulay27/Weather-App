@@ -32,3 +32,6 @@ export default App;
 // signing out makes sign in btn appear again
 // if signed in etc..
 // store each accounts favorite cities
+
+// same problem of thinking!! do i move the signinwithGoogle
+// const into main page and pass down that prob into SignIn.jsx??

@@ -3,7 +3,7 @@ import {React,useState} from 'react'
 import {signInWithPopup, GoogleAuthProvider} from 'firebase/auth'
 import {auth} from '../firebase-config.js'
 
-function SignIn() {
+function SignIn(props) {
 
 const [firstName, setfirstName] = useState('')
 const [profilePic, setprofilePic] = useState('')

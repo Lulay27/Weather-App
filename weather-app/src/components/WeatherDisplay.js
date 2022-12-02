@@ -1,7 +1,5 @@
 import React from 'react';
 import styles from './componentStyles.module.css';
-import SignedOut from '../firebase/SignedOut';
-import SignIn from '../firebase/SignIn';
 
 export default function SidePanelData(props) {
   let latestCity;
@@ -24,9 +22,6 @@ export default function SidePanelData(props) {
         <h1>Weather Application</h1>
         <h2>{time.toLocaleTimeString()}</h2>
       </div>
-
-      <SignIn></SignIn>
-      <SignedOut></SignedOut>
 
       {props.isSubmitting ? (
         <div className={styles.weatherDisplayContainer}>
