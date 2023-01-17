@@ -28,16 +28,28 @@ export default function MainPage() {
     setInputFromSubmit(input);
   };
 
-  const addToCityArr = (newCity) => {
-    setCityArr([...cityArr, newCity]);
-  };
+  // const addToCityArr = (newCity) => {
+  //   setCityArr([...cityArr, newCity], () => {
+  //     if (isLoggedIn) {
+  //       // i think create new data in single line so email->city
+
+  //       setDoc(doc(db, 'USERS', email), {
+  //         myCity: cityArr.map((cityData) => {
+  //           return cityData.cityTitle;
+  //         }),
+  //       });
+  //       console.log('logged in trying to input city into database');
+  //     }
+  //   });
+  // };
 
   const handleInvalidInput = (e) => {
     e.preventDefault();
     setErrorMsg('Enter a valid city name');
   };
 
-  const testerFunc = (targetId) => {
+  const addRecentCity = (targetId) => {
+    // what thus do again lol ohh this for when user clicks on recent cities and adds that clicked to the cityArr
     const tester = cityArr.find((city) => city.id == targetId);
 
     const constBlah = { ...tester, id: uniqid() };
@@ -56,13 +68,26 @@ export default function MainPage() {
         setEmail(result.user.email);
         setIsLoggedIn(true);
 
-        setDoc(doc(db, 'USERS', result.user.email));
+        // setDoc(doc(db, 'USERS', result.user.email)); going to intilize in one setdoc
 
         // set isLoggedIn to true in future have signout set that to false
       })
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  const testerCallBackForFirebase = () => {
+    if (isLoggedIn) {
+      // i think create new data in single line so email->city
+
+      setDoc(doc(db, 'USERS', email), {
+        myCity: cityArr.map((cityData) => {
+          return cityData.cityTitle;
+        }),
+      });
+      console.log('logged in trying to input city into database');
+    }
   };
 
   useEffect(() => {
@@ -75,12 +100,12 @@ export default function MainPage() {
           const cityCall = await axios.get(
             `https://api.openweathermap.org/data/2.5/weather?units=metric&lat=${coordCall.data[0].lat}&lon=${coordCall.data[0].lon}&appid=8371ba1206036d8bad7d681b9fced4bd`
           );
-
           cityCall.data.cityTitle = input;
           cityCall.data.id = uniqid();
           setCityData(cityCall.data);
           setIsSubmitting(true);
-          addToCityArr(cityCall.data);
+          setCityArr([...cityArr, cityCall.data]);
+          // testerCallBackForFirebase();
           setErrorMsg('');
         } catch (err) {
           console.log(err);
@@ -88,13 +113,11 @@ export default function MainPage() {
         }
       })();
     }
-
-    if (isLoggedIn) {
-      updateDoc(doc(db, 'USERS', email), {
-        myCity: input,
-      });
-    }
   }, [inputFromSubmit]);
+
+  useEffect(() => {
+    testerCallBackForFirebase();
+  }, [cityArr]);
 
   return (
     <>
@@ -115,7 +138,7 @@ export default function MainPage() {
           <SidePanelHistory
             isSubmitting={isSubmitting}
             cityArr={cityArr}
-            testerFunc={testerFunc}
+            addRecentCity={addRecentCity}
           />
         </div>
         <div className={styles.weatherData}>

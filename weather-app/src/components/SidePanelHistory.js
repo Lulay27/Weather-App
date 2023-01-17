@@ -10,7 +10,7 @@ export default function SidePanelHistory(props) {
         ? reversedArray.map((cityData) => {
             return (
               <div key={cityData.id}>
-                <button onClick={() => props.testerFunc(cityData.id)}>
+                <button onClick={() => props.addRecentCity(cityData.id)}>
                   {cityData.cityTitle}
                 </button>
               </div>

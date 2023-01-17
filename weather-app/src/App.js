@@ -35,3 +35,7 @@ export default App;
 
 // same problem of thinking!! do i move the signinwithGoogle
 // const into main page and pass down that prob into SignIn.jsx??
+
+// CLEAN UP MAINPAGE lots of messy setStates reduce that...
+
+// running clock??? maybe some webpage effects based on weather??? example Yukon -12 snowy effect
