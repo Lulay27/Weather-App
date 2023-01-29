@@ -8,7 +8,14 @@ import axios from 'axios';
 
 // firebase imports
 import { db } from '../firebase-config';
-import { collection, addDoc, setDoc, doc, updateDoc } from 'firebase/firestore';
+import {
+  collection,
+  addDoc,
+  setDoc,
+  doc,
+  updateDoc,
+  getDoc,
+} from 'firebase/firestore';
 import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { auth } from '../firebase-config.js';
 
@@ -27,21 +34,6 @@ export default function MainPage() {
     e.preventDefault();
     setInputFromSubmit(input);
   };
-
-  // const addToCityArr = (newCity) => {
-  //   setCityArr([...cityArr, newCity], () => {
-  //     if (isLoggedIn) {
-  //       // i think create new data in single line so email->city
-
-  //       setDoc(doc(db, 'USERS', email), {
-  //         myCity: cityArr.map((cityData) => {
-  //           return cityData.cityTitle;
-  //         }),
-  //       });
-  //       console.log('logged in trying to input city into database');
-  //     }
-  //   });
-  // };
 
   const handleInvalidInput = (e) => {
     e.preventDefault();
@@ -64,33 +56,40 @@ export default function MainPage() {
     });
     signInWithPopup(auth, provider)
       .then((result) => {
-        console.log(result);
         setEmail(result.user.email);
+
         setIsLoggedIn(true);
 
-        // setDoc(doc(db, 'USERS', result.user.email)); going to intilize in one setdoc
+        // setCityArr([]); for when searching before logging in
 
-        // set isLoggedIn to true in future have signout set that to false
+        // GRABBING EMAILS DB
+        const docRef = doc(db, 'USERS', result.user.email);
+        getDoc(docRef).then((docSnap) => {
+          if (docSnap.exists()) {
+            console.log(
+              'doc data from',
+              result.user.email,
+              ':',
+              docSnap.data()
+            );
+            // let dataArr = docSnap.data().myCity;
+            console.log('testing: ', docSnap.data().myCity);
+            // PROBLEM THIS SETS IT TO ARRAY OF CITY NAMES
+            // OTHER FUNCTIONS USE CITYARR FOR TEMP ETC
+            // SOLN create a new useState array containing import data
+            // setCityArr(docSnap.data().myCity);
+          }
+        });
+
+        setIsSubmitting(false);
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
-  const testerCallBackForFirebase = () => {
-    if (isLoggedIn) {
-      // i think create new data in single line so email->city
-
-      setDoc(doc(db, 'USERS', email), {
-        myCity: cityArr.map((cityData) => {
-          return cityData.cityTitle;
-        }),
-      });
-      console.log('logged in trying to input city into database');
-    }
-  };
-
   useEffect(() => {
+    console.log('useEffect 1 ');
     if (input !== '') {
       (async () => {
         try {
@@ -105,7 +104,6 @@ export default function MainPage() {
           setCityData(cityCall.data);
           setIsSubmitting(true);
           setCityArr([...cityArr, cityCall.data]);
-          // testerCallBackForFirebase();
           setErrorMsg('');
         } catch (err) {
           console.log(err);
@@ -116,8 +114,41 @@ export default function MainPage() {
   }, [inputFromSubmit]);
 
   useEffect(() => {
-    testerCallBackForFirebase();
+    console.log('useEffect 2 ');
+
+    if (isLoggedIn) {
+      // const docRef = doc(db, 'USERS', email);
+
+      // getDoc(docRef).then((docSnap) => {
+      //   if (docSnap.exists()) {
+      //     console.log('doc data from', email, ':', docSnap.data());
+      //     // let dataArr = docSnap.data().myCity;
+      //     console.log('testing: ', docSnap.data().myCity);
+      //   }
+      // });
+
+      setDoc(doc(db, 'USERS', email), {
+        myCity: cityArr.map((cityData) => {
+          return cityData.cityTitle;
+        }),
+      });
+    }
   }, [cityArr]);
+
+  // useEffect(() => {
+  //   console.log('useEffect 3 ');
+
+  //   if (isLoggedIn) {
+  //     const docRef = doc(db, 'USERS', email);
+
+  //     getDoc(docRef).then((docSnap) => {
+  //       if (docSnap.exists()) {
+  //         console.log('doc data from', email, ':', docSnap.data());
+  //         // setCityArr(docSnap.data().myCity);
+  //       }
+  //     });
+  //   }
+  // }, [email, isLoggedIn]);
 
   return (
     <>
