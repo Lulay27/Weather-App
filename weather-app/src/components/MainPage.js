@@ -60,8 +60,6 @@ export default function MainPage() {
 
         setIsLoggedIn(true);
 
-        // setCityArr([]); for when searching before logging in
-
         // GRABBING EMAILS DB
         const docRef = doc(db, 'USERS', result.user.email);
         getDoc(docRef).then((docSnap) => {
@@ -72,12 +70,19 @@ export default function MainPage() {
               ':',
               docSnap.data()
             );
-            // let dataArr = docSnap.data().myCity;
-            console.log('testing: ', docSnap.data().myCity);
+
+            console.log('this is db array: ', docSnap.data().myCity);
+
             // PROBLEM THIS SETS IT TO ARRAY OF CITY NAMES
             // OTHER FUNCTIONS USE CITYARR FOR TEMP ETC
             // SOLN create a new useState array containing import data
-            // setCityArr(docSnap.data().myCity);
+
+            setCityArr(docSnap.data().myCity);
+
+            // TRY STORING THE WHOLE API CALL UNCLEANED INTO DB
+
+            // ok i see so soln is create another piece of state for what u want to store
+            // should i store date and time of weather also?
           }
         });
 
@@ -104,7 +109,12 @@ export default function MainPage() {
           setCityData(cityCall.data);
           setIsSubmitting(true);
           setCityArr([...cityArr, cityCall.data]);
-          setErrorMsg('');
+
+          console.log('this is cityArr: ', cityArr);
+
+          // set a new state for
+
+          setErrorMsg(''); // ??
         } catch (err) {
           console.log(err);
           setErrorMsg('Enter a valid city name');
@@ -117,38 +127,11 @@ export default function MainPage() {
     console.log('useEffect 2 ');
 
     if (isLoggedIn) {
-      // const docRef = doc(db, 'USERS', email);
-
-      // getDoc(docRef).then((docSnap) => {
-      //   if (docSnap.exists()) {
-      //     console.log('doc data from', email, ':', docSnap.data());
-      //     // let dataArr = docSnap.data().myCity;
-      //     console.log('testing: ', docSnap.data().myCity);
-      //   }
-      // });
-
       setDoc(doc(db, 'USERS', email), {
-        myCity: cityArr.map((cityData) => {
-          return cityData.cityTitle;
-        }),
+        myCity: cityArr,
       });
     }
   }, [cityArr]);
-
-  // useEffect(() => {
-  //   console.log('useEffect 3 ');
-
-  //   if (isLoggedIn) {
-  //     const docRef = doc(db, 'USERS', email);
-
-  //     getDoc(docRef).then((docSnap) => {
-  //       if (docSnap.exists()) {
-  //         console.log('doc data from', email, ':', docSnap.data());
-  //         // setCityArr(docSnap.data().myCity);
-  //       }
-  //     });
-  //   }
-  // }, [email, isLoggedIn]);
 
   return (
     <>
@@ -165,19 +148,31 @@ export default function MainPage() {
               <div className={styles.errorMsg}>{errorMsg}</div>
             </div>
           </form>
-          <SidePanelData isSubmitting={isSubmitting} cityArr={cityArr} />
-          <SidePanelHistory
-            isSubmitting={isSubmitting}
-            cityArr={cityArr}
-            addRecentCity={addRecentCity}
-          />
+          {isSubmitting ? (
+            <SidePanelData isSubmitting={isSubmitting} cityArr={cityArr} />
+          ) : (
+            ''
+          )}
+          {isSubmitting ? (
+            <SidePanelHistory
+              isSubmitting={isSubmitting}
+              cityArr={cityArr}
+              addRecentCity={addRecentCity}
+            />
+          ) : (
+            ''
+          )}
         </div>
         <div className={styles.weatherData}>
-          <WeatherDisplay
-            isSubmitting={isSubmitting}
-            cityArr={cityArr}
-            cityData={cityData}
-          />
+          {isSubmitting ? (
+            <WeatherDisplay
+              isSubmitting={isSubmitting}
+              cityArr={cityArr}
+              cityData={cityData}
+            />
+          ) : (
+            ''
+          )}
 
           <h1>{isLoggedIn ? `Welcome ${email}` : ''}</h1>
           <button onClick={signInWithGoogle}>SIGN UP BOY</button>
