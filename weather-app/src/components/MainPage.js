@@ -8,14 +8,7 @@ import axios from 'axios';
 
 // firebase imports
 import { db } from '../firebase-config';
-import {
-  collection,
-  addDoc,
-  setDoc,
-  doc,
-  updateDoc,
-  getDoc,
-} from 'firebase/firestore';
+import { setDoc, doc, getDoc } from 'firebase/firestore';
 import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { auth } from '../firebase-config.js';
 
@@ -26,29 +19,34 @@ export default function MainPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [cityArr, setCityArr] = useState([]);
   const [errorMsg, setErrorMsg] = useState('');
-
   const [email, setEmail] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  // on form submit setInput to input from user
   const handleSubmit = (e) => {
     e.preventDefault();
     setInputFromSubmit(input);
   };
 
+  // error msg for invalid city names
   const handleInvalidInput = (e) => {
     e.preventDefault();
     setErrorMsg('Enter a valid city name');
   };
 
+  // on clicking on city in history tab
+  // finds clicked city in cityArr
+  // clones city, but new id: and setCityArr with new clone
   const addRecentCity = (targetId) => {
-    // what thus do again lol ohh this for when user clicks on recent cities and adds that clicked to the cityArr
-    const tester = cityArr.find((city) => city.id == targetId);
+    const cityClone = cityArr.find((city) => city.id === targetId);
 
-    const constBlah = { ...tester, id: uniqid() };
+    const newIdCityClone = { ...cityClone, id: uniqid() };
 
-    setCityArr([...cityArr, constBlah]);
+    setCityArr([...cityArr, newIdCityClone]);
   };
 
+  // logged in with google auth
+  // checks if past data from account exists set array to that data
   const signInWithGoogle = () => {
     const provider = new GoogleAuthProvider();
     provider.setCustomParameters({
@@ -57,44 +55,26 @@ export default function MainPage() {
     signInWithPopup(auth, provider)
       .then((result) => {
         setEmail(result.user.email);
-
         setIsLoggedIn(true);
+        setIsSubmitting(false);
 
-        // GRABBING EMAILS DB
         const docRef = doc(db, 'USERS', result.user.email);
         getDoc(docRef).then((docSnap) => {
           if (docSnap.exists()) {
-            console.log(
-              'doc data from',
-              result.user.email,
-              ':',
-              docSnap.data()
-            );
-
-            console.log('this is db array: ', docSnap.data().myCity);
-
-            // PROBLEM THIS SETS IT TO ARRAY OF CITY NAMES
-            // OTHER FUNCTIONS USE CITYARR FOR TEMP ETC
-            // SOLN create a new useState array containing import data
-
             setCityArr(docSnap.data().myCity);
-
-            // TRY STORING THE WHOLE API CALL UNCLEANED INTO DB
-
-            // ok i see so soln is create another piece of state for what u want to store
-            // should i store date and time of weather also?
           }
         });
-
-        setIsSubmitting(false);
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
+  // activates when inputFromSubmit is set
+  // first api call grabs coordinates from input state (coordCall)
+  // second api call uses those coords to grab city weather data (cityCall)
+  // adds to attributes to cityCall title and id then adds to cityArr
   useEffect(() => {
-    console.log('useEffect 1 ');
     if (input !== '') {
       (async () => {
         try {
@@ -109,12 +89,7 @@ export default function MainPage() {
           setCityData(cityCall.data);
           setIsSubmitting(true);
           setCityArr([...cityArr, cityCall.data]);
-
-          console.log('this is cityArr: ', cityArr);
-
-          // set a new state for
-
-          setErrorMsg(''); // ??
+          setErrorMsg('');
         } catch (err) {
           console.log(err);
           setErrorMsg('Enter a valid city name');
@@ -123,9 +98,9 @@ export default function MainPage() {
     }
   }, [inputFromSubmit]);
 
+  // activates when cityArr is set
+  // if user is logged in, set the firebase db to the cityArr
   useEffect(() => {
-    console.log('useEffect 2 ');
-
     if (isLoggedIn) {
       setDoc(doc(db, 'USERS', email), {
         myCity: cityArr,
@@ -137,6 +112,7 @@ export default function MainPage() {
     <>
       <div className={styles.main}>
         <div className={styles.sidePanel}>
+          {/* turn this form into a component? */}
           <form onSubmit={input !== '' ? handleSubmit : handleInvalidInput}>
             <div className={styles.inputContainer}>
               <input
@@ -148,6 +124,7 @@ export default function MainPage() {
               <div className={styles.errorMsg}>{errorMsg}</div>
             </div>
           </form>
+          {/* end of form */}
           {isSubmitting ? (
             <SidePanelData isSubmitting={isSubmitting} cityArr={cityArr} />
           ) : (
@@ -174,9 +151,9 @@ export default function MainPage() {
             ''
           )}
 
+          {/* turn this into a component */}
           <h1>{isLoggedIn ? `Welcome ${email}` : ''}</h1>
           <button onClick={signInWithGoogle}>SIGN UP BOY</button>
-
           <button>SIGN OUT G</button>
         </div>
       </div>
