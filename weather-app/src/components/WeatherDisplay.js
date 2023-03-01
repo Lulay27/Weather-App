@@ -26,7 +26,7 @@ export default function SidePanelData(props) {
     <>
       <div className={styles.titleDate}>
         {/* <h1>Weather Application</h1> */}
-        <h2>{time.toLocaleTimeString()}</h2>
+        {/* <h2>{time.toLocaleTimeString()}</h2> */}
       </div>
 
       <div className={styles.weatherDisplayContainer}>

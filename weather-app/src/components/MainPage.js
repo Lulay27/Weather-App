@@ -26,6 +26,7 @@ export default function MainPage() {
   const [errorMsg, setErrorMsg] = useState('');
   const [email, setEmail] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [time, setTime] = useState('');
 
   // on form submit setInput to input from user
   const handleSubmit = (e) => {
@@ -100,6 +101,16 @@ export default function MainPage() {
       });
   };
 
+  // every second grabbing the time and setting the time state
+  setInterval(() => {
+    const current = new Date();
+    const hours = current.getHours().toString().padStart(2, '0');
+    const minutes = current.getMinutes().toString().padStart(2, '0');
+    const seconds = current.getSeconds().toString().padStart(2, '0');
+    const timeString = `${hours}:${minutes}:${seconds}`;
+    setTime(timeString);
+  }, 1000);
+
   // activates when inputFromSubmit is set
   // first api call grabs coordinates from input state (coordCall)
   // second api call uses those coords to grab city weather data (cityCall)
@@ -170,6 +181,7 @@ export default function MainPage() {
         </div>
         <div className={styles.weatherData}>
           <h1>Weather Application</h1>
+          <h1>{time}</h1>
           <h1>{isLoggedIn ? `Welcome ${email}` : ''}</h1>
           <button onClick={signInWithGoogle}>Sign in with Google</button>
           <button onClick={signOutWithGoogle}>Sign out</button>
