@@ -5,18 +5,14 @@ export default function SidePanelHistory(props) {
 
   return (
     <div>
-      {props.isSubmitting ? <h2>Recent Searches</h2> : null}
-      {props.isSubmitting
-        ? reversedArray.map((cityData) => {
-            return (
-              <div key={cityData.id}>
-                <button onClick={() => props.addRecentCity(cityData.id)}>
-                  {cityData.cityTitle}
-                </button>
-              </div>
-            );
-          })
-        : null}
+      <h2>Recent Searches</h2>
+      {reversedArray.map((cityData) => {
+        return (
+          <div key={cityData.id}>
+            <ol>{cityData.cityTitle}</ol>
+          </div>
+        );
+      })}
     </div>
   );
 }

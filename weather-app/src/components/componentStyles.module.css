@@ -1,7 +1,7 @@
 .main {
   display: grid;
   grid-template-columns: 3fr 1fr;
-  color: white;
+  color: black;
   min-height: 500px;
 }
 
@@ -56,7 +56,7 @@ input[type='text'] {
 }
 
 .errorMsg {
-  color: black;
+  color: red;
 }
 
 .searchBtn {

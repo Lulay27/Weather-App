@@ -25,26 +25,22 @@ export default function SidePanelData(props) {
   return (
     <>
       <div className={styles.titleDate}>
-        <h1>Weather Application</h1>
+        {/* <h1>Weather Application</h1> */}
         <h2>{time.toLocaleTimeString()}</h2>
       </div>
 
-      {props.isSubmitting ? (
-        <div className={styles.weatherDisplayContainer}>
-          <li className={`${styles.temperature} ${styles.flexcenter}`}>
-            {tempz}
-          </li>
-          <li className={`${styles.city} ${styles.flexcenter}`}>
-            {latestCity.cityTitle}
-          </li>
-          <li className={` ${styles.forcast}`}>
-            <img src={iconURL} width="80px" alt="forcast-img"></img>
-            <div>{latestCity.desc}</div>
-          </li>
-        </div>
-      ) : (
-        ''
-      )}
+      <div className={styles.weatherDisplayContainer}>
+        <li className={`${styles.temperature} ${styles.flexcenter}`}>
+          {tempz}
+        </li>
+        <li className={`${styles.city} ${styles.flexcenter}`}>
+          {latestCity.cityTitle}
+        </li>
+        <li className={` ${styles.forcast}`}>
+          <img src={iconURL} width="80px" alt="forcast-img"></img>
+          <div>{latestCity.desc}</div>
+        </li>
+      </div>
     </>
   );
 }
