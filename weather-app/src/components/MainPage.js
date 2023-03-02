@@ -41,6 +41,14 @@ export default function MainPage() {
     setErrorMsg('Enter a valid city name');
   };
 
+  const isClearing = () => {
+    setCityArr([]);
+    setCityData({});
+    setInputFromSubmit('');
+    setInput('');
+    setIsSubmitting(false);
+  };
+
   // on clicking on city in history tab
   // finds clicked city in cityArr
   // clones city, but new id: and setCityArr with new clone
@@ -78,27 +86,25 @@ export default function MainPage() {
   };
 
   // signs user out
-  // should i just create my own???
-  // set isloggedin = false clear the cityarray....basically refresh page
+  // clears all states also for a refresh effect
   const signOutWithGoogle = () => {
-    // if already signed out do nothing
-
-    signOut(auth)
-      .then(() => {
-        console.log('signed out done');
-        setCityData({});
-        setInput('');
-        setInputFromSubmit('');
-        setIsSubmitting(false);
-        setErrorMsg('');
-        setIsLoggedIn(false);
-        setCityArr([]);
-        setEmail('');
-        // on log out log in clear the input field
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (isLoggedIn) {
+      signOut(auth)
+        .then(() => {
+          console.log('signed out done');
+          setCityData({});
+          setInput('');
+          setInputFromSubmit('');
+          setIsSubmitting(false);
+          setErrorMsg('');
+          setIsLoggedIn(false);
+          setCityArr([]);
+          setEmail('');
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 
   // every second grabbing the time and setting the time state
@@ -116,6 +122,7 @@ export default function MainPage() {
   // second api call uses those coords to grab city weather data (cityCall)
   // adds to attributes to cityCall title and id then adds to cityArr
   useEffect(() => {
+    console.log('useEffect 1');
     if (inputFromSubmit !== '') {
       (async () => {
         try {
@@ -174,27 +181,31 @@ export default function MainPage() {
             ''
           )}
           {isLoggedIn ? (
-            <SidePanelHistory cityArr={cityArr} addRecentCity={addRecentCity} />
+            <SidePanelHistory
+              cityArr={cityArr}
+              addRecentCity={addRecentCity}
+              isClearing={isClearing}
+            />
           ) : (
             ''
           )}
         </div>
         <div className={styles.weatherData}>
+          {/* turn this into a component? */}
           <h1>Weather Application</h1>
           <h1>{time}</h1>
           <h1>{isLoggedIn ? `Welcome ${email}` : ''}</h1>
-          <button onClick={signInWithGoogle}>Sign in with Google</button>
-          <button onClick={signOutWithGoogle}>Sign out</button>
+          <button className={styles.authBtn} onClick={signInWithGoogle}>
+            Sign in with Google
+          </button>
+          <button className={styles.authBtn} onClick={signOutWithGoogle}>
+            Sign out
+          </button>
           {isSubmitting ? (
             <WeatherDisplay cityArr={cityArr} cityData={cityData} />
           ) : (
             ''
           )}
-
-          {/* turn this into a component */}
-          {/* <h1>{isLoggedIn ? `Welcome ${email}` : ''}</h1>
-          <button onClick={signInWithGoogle}>SIGN UP BOY</button>
-          <button>SIGN OUT G</button> */}
         </div>
       </div>
     </>

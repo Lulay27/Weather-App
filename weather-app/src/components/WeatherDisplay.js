@@ -7,8 +7,6 @@ export default function SidePanelData(props) {
   let iconId;
   let iconURL;
 
-  let time = new Date();
-
   if (props.cityArr.length > 0) {
     // latestCity = props.cityArr[props.cityArr.length - 1];
 
