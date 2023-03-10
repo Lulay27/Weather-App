@@ -1,4 +1,5 @@
 import React from 'react';
+import styles from './componentStyles.module.css';
 
 // displays history of city searches. Most recent on top
 export default function SidePanelHistory(props) {
@@ -6,7 +7,9 @@ export default function SidePanelHistory(props) {
   return (
     <div>
       <h2>Recent Searches</h2>
-      <button onClick={props.isClearing}>clear</button>
+      <button className={styles.authBtn} onClick={props.isClearing}>
+        clear
+      </button>
       {reversedArray.map((cityData) => {
         return (
           <div key={cityData.id}>

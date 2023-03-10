@@ -9,13 +9,10 @@ import axios from 'axios';
 // firebase imports
 import { db } from '../firebase-config';
 import { setDoc, doc, getDoc } from 'firebase/firestore';
-import {
-  signInWithPopup,
-  GoogleAuthProvider,
-  signOut,
-  getAuth,
-} from 'firebase/auth';
+import { signInWithPopup, GoogleAuthProvider, signOut } from 'firebase/auth';
 import { auth } from '../firebase-config.js';
+import TitleData from './TitleData';
+import SearchBar from './SearchBar';
 
 export default function MainPage() {
   const [cityData, setCityData] = useState({});
@@ -160,21 +157,13 @@ export default function MainPage() {
     <>
       <div className={styles.main}>
         <div className={styles.sidePanel}>
-          {/* turn this form into a component? */}
-          <form onSubmit={input !== '' ? handleSubmit : handleInvalidInput}>
-            <div className={styles.inputContainer}>
-              <input
-                className={styles.formInput}
-                onChange={(e) => setInput(e.target.value)}
-                type="text"
-                placeholder="Enter a City"
-                value={input}
-              ></input>
-              <div className={styles.errorMsg}>{errorMsg}</div>
-            </div>
-          </form>
-          {/* end of form */}
-
+          <SearchBar
+            input={input}
+            handleSubmit={handleSubmit}
+            handleInvalidInput={handleInvalidInput}
+            setInput={setInput}
+            errorMsg={errorMsg}
+          />
           {isSubmitting ? (
             <SidePanelData isSubmitting={isSubmitting} cityArr={cityArr} />
           ) : (
@@ -191,16 +180,14 @@ export default function MainPage() {
           )}
         </div>
         <div className={styles.weatherData}>
-          {/* turn this into a component? */}
-          <h1>Weather Application</h1>
-          <h1>{time}</h1>
-          <h1>{isLoggedIn ? `Welcome ${email}` : ''}</h1>
-          <button className={styles.authBtn} onClick={signInWithGoogle}>
-            Sign in with Google
-          </button>
-          <button className={styles.authBtn} onClick={signOutWithGoogle}>
-            Sign out
-          </button>
+          <TitleData
+            time={time}
+            isLoggedIn={isLoggedIn}
+            signInWithGoogle={signInWithGoogle}
+            signOutWithGoogle={signOutWithGoogle}
+            email={email}
+          />
+
           {isSubmitting ? (
             <WeatherDisplay cityArr={cityArr} cityData={cityData} />
           ) : (
